@@ -21,14 +21,16 @@ class App extends Component {
             <div className="collpase navbar-collapse" class="topnav-right">
               <ul className="navbar-nav mr-auto">
                 <form class="form-inline">
-                  <button class="btn btn-outline-success" type="button">View Wrapped</button>
+                  <Link to="/stats" className="navbar-brand">
+                    <button class="btn btn-outline-success" type="button">View Wrapped</button>
+                  </Link>
                 </form>
               </ul>
             </div>
           </nav>
           <br/>
           <Route path="/" exact component={SlpUpload} />
-          <Route path="/create" component={ViewWrapped} />
+          <Route path="/stats" component={ViewWrapped} />
         </div>
       </Router>
     );

@@ -7,7 +7,6 @@ const api = require('../backend/routes/user.routes')
 
 require('dotenv').config();
 
-
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
 const connection = mongoose.connection;
@@ -31,8 +30,6 @@ const port = process.env.PORT || 4000;
 app.listen(port, () => {
     console.log('Connected to port ' + port)
 })
-
-
 
 app.use((req, res, next) => {
     // Error goes via `next()` method

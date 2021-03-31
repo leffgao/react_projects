@@ -1,10 +1,19 @@
 let express = require('express'),
     multer = require('multer'),
-    mongoose = require('mongoose'),
     //uuidv4 = require('uuid/v4'),
     router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const DIR = './public/';
+
+const helpers = require('./helpers');
+const path = require('path');
+const { promises: fs } = require("fs")
+const fsExtra = require('fs-extra')
+
+var script = require('./script');
+
+const srcDir = './public';
+const destDir = './temp/';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -16,53 +25,39 @@ const storage = multer.diskStorage({
     }
 });
 
-var upload = multer({
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg") {
-            cb(null, true);
-        } else {
-            cb(null, false);
-            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-        }
-    }
+router.post('/upload-images', (req, res) => {
+
+  let upload = multer({ storage: storage, fileFilter: helpers.slippiFilter }).array('matchesCollection');
+
+  upload(req, res, function(err) {
+      if (req.fileValidationError) {
+          return res.send(req.fileValidationError);
+      }
+
+      //To copy a folder or file  
+      copyDir(srcDir, destDir)
+  });
+
 });
 
-// User model
-let User = require('../models/User');
+async function copyDir(src, dest) {
+  await fs.mkdir(dest, { recursive: true });
+  let entries = await fs.readdir(src, { withFileTypes: true });
 
-router.post('/upload-images', upload.array('imgCollection', 6), (req, res, next) => {
-    const reqFiles = [];
-    const url = req.protocol + '://' + req.get('host')
-    for (var i = 0; i < req.files.length; i++) {
-        reqFiles.push(url + '/public/' + req.files[i].filename)
-    }
+  for (let entry of entries) {
+      let srcPath = path.join(src, entry.name);
+      let destPath = path.join(dest, entry.name);
 
-    const user = new User({
-        _id: new mongoose.Types.ObjectId(),
-        imgCollection: reqFiles
-    });
+      entry.isDirectory() ?
+          await copyDir(srcPath, destPath) :
+          await fs.copyFile(srcPath, destPath);
+  }
 
-    user.save().then(result => {
-        res.status(201).json({
-            message: "Done upload!",
-            userCreated: {
-                _id: result._id,
-                imgCollection: result.imgCollection
-            }
-        })
-    }).catch(err => {
-        console.log(err)
-    })
-})
+  fsExtra.emptyDirSync(src);
 
-router.get("/", (req, res, next) => {
-    User.find().then(data => {
-        res.status(200).json({
-            message: "User list retrieved successfully!",
-            users: data
-        });
-    });
-});
+  script.parse_folder(dest);
+  
+  fsExtra.emptyDirSync(dest);
+}
 
 module.exports = router;
