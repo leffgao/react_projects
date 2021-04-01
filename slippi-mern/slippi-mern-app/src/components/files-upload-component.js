@@ -26,9 +26,11 @@ export default class FilesUploadComponent extends Component {
             formData.append('matchesCollection', this.state.matchesCollection[key])
         }
         axios.post("http://localhost:4000/api/upload-slp", formData, {
-        }).then(res => {
-            console.log(res.data)
-            document.getElementById("test").textContent = "test2";
+        }).then((res) => {
+            console.log(res)
+            document.getElementById("test").innerHTML = res.data.inserted;
+        }, (error) => {
+          console.log(error);
         });
 
         document.getElementById("FileSlp").value = "";

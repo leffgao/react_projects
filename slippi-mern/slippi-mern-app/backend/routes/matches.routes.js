@@ -20,23 +20,34 @@ const storage = multer.diskStorage({
         cb(null, DIR);
     },
     filename: (req, file, cb) => {
-        const fileName = file.originalname.toLowerCase().split(' ').join('-');
-        cb(null, uuidv4() + '-' + fileName)
+        const fileName = file.originalname;
+        cb(null,fileName)
     }
 });
 
-router.post('/upload-slp', (req, res) => {
+router.post('/upload-slp', async (req,res) => {
 
   let upload = multer({ storage: storage, fileFilter: helpers.slippiFilter }).array('matchesCollection');
 
-  upload(req, res, function(err) {
+  var payload = null;
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  await upload(req, res, async function(err) {
       if (req.fileValidationError) {
           return res.send(req.fileValidationError);
       }
       //To copy a folder or file  
-      copyDir(srcDir, destDir)
+      payload = await copyDir(srcDir, destDir);
   });
 
+  while(payload === null){
+    await sleep(200);
+  }
+  res.payload = payload;
+  res.json(payload);
 });
 
 async function copyDir(src, dest) {
@@ -54,9 +65,11 @@ async function copyDir(src, dest) {
 
   fsExtra.emptyDirSync(src);
 
-  script.parse_folder(dest);
+  var payload = await script.parse_folder(dest);
   
   fsExtra.emptyDirSync(dest);
+
+  return payload;
 }
 
 module.exports = router;

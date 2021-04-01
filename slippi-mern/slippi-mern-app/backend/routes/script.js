@@ -1,7 +1,7 @@
 // parses slp files into mongo db
 
 const { default: SlippiGame, generateOverallStats } = require('@slippi/slippi-js');
-const { match } = require('assert');
+const { match, fail } = require('assert');
 const fs = require('fs');
 
 var MongoClient = require('mongodb').MongoClient;
@@ -297,6 +297,7 @@ function parse_slp(filename, arr){
   }
 }
 
+var payload = null;
 var obj_arr = [];
 var failed_inserts = [];
 var count = 0;
@@ -348,18 +349,35 @@ module.exports = {
         // specify the DB's name
         const db = client.db('mongoslp');
         // execute find query
-        const items = await db.collection('matches').insertMany(obj_arr, function(err, res) {
+
+        function sleep(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        payload = null;
+        
+        let items = await db.collection('matches').insertMany(obj_arr, await function(err, res) {
           if (err) throw err;
           console.log("Number of documents inserted: " + res.insertedCount);
           console.log("Failed inserts: " + (count - res.insertedCount));
           console.log(failed_inserts);
           client.close();
+          
+          count = 0;
 
-          obj_arr = [];
-          count = 0;  
-        });    
+          payload = {inserted: obj_arr.length - failed_inserts.length, failed: failed_inserts.length, failedarr: failed_inserts};
+        });   
+
+        while(payload === null){
+          await sleep(200);
+        }
+        
+        obj_arr = [];
+           
+        return payload;
       } 
-      insertMongo();     
+
+      return insertMongo();     
     }    
   }
 }
