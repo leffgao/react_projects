@@ -43,6 +43,9 @@ let Match = new Schema({
     characterColor: {
       type: Number
     },
+    code: {
+      type: String
+    },
     characterString: {
       type: String
     },
