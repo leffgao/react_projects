@@ -5,16 +5,6 @@ const bodyParser = require('body-parser');
 
 const api = require('../backend/routes/matches.routes')
 
-require('dotenv').config();
-
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
-const connection = mongoose.connection;
-
-connection.once('open', () => {
-  console.log("MongoDB database connection established successfully");
-})
-
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
