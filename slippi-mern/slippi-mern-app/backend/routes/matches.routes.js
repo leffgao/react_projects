@@ -15,6 +15,8 @@ var script = require('./script');
 const srcDir = './public';
 const destDir = './temp/';
 
+const matches = require("../controllers/matches.controller.js");
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, DIR);
@@ -49,6 +51,8 @@ router.post('/upload-slp', async (req,res) => {
   res.payload = payload;
   res.json(payload);
 });
+
+router.get("/stats", matches.findAll);
 
 async function copyDir(src, dest) {
   await fs.mkdir(dest, { recursive: true });

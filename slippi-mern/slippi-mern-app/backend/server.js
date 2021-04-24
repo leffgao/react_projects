@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const matchRoutes = express.Router();
 
 const api = require('../backend/routes/matches.routes')
-let Match = require('./matches.model')
+let Match = require('./models/matches.model')
 
 require('dotenv').config();
 
