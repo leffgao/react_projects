@@ -37,13 +37,10 @@ export default class App extends Component {
       "Ness.png","Peach.png","Pichu.png","Pikachu.png","Roy.png","Samus.png","Sheik.png","Yoshi.png",
       "Young Link.png","Zelda.png"
     ]
-
-    const arr1 = ["1","2"];
-    const arr2 = ["one", "two"];
-
+    
     const options = chararr.map((x,i) => ({
       "value": x,
-      "label": <div><img src={`stock_icons/${charpng[i]}`} height="30px" width="30px"/> {x}</div>
+      "label": <div><img src={`stock_icons/${charpng[i]}`} height="30px" width="30px"/> {charpng[i].split('.').slice(0, -1).join('.')}</div>
     }))
 
     this.setState({selectOptions: options})
