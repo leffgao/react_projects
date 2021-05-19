@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+#holder {
+  position: relative;
+}
+
+#chart-number {
+  position: absolute;
+  left: 950px;
+  top: 300px;
+  font-size: 100px
+}

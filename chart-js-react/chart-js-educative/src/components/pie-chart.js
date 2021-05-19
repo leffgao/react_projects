@@ -46,7 +46,7 @@ export default class PieChart extends Component {
             },
             centerText: {
               color: "#000",
-              value: state.datasets[0].data[0],
+              value: "test",
               fontSizeAdjust: 0.2 // increase font size 20% based on default font size
             }
           }}
