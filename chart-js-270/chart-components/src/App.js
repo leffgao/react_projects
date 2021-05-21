@@ -4,41 +4,34 @@ import "chartjs-plugin-doughnutlabel";
 
 export default class App extends React.Component {
   render() {
-    var char_dict = {
-      0 : "CAPTAIN_FALCON",
-      1 : "DONKEY_KONG",
-      2 : "FOX" ,
-      3 : "GAME_AND_WATCH",
-      4 : "KIRBY",
-      5 : "BOWSER",
-      6 : "LINK",
-      7 : "LUIGI",
-      8 : "MARIO",
-      9 : "MARTH",
-      10 : "MEWTWO",
-      11 : "NESS",
-      12 : "PEACH",
-      13 : "PIKACHU",
-      14 : "ICE_CLIMBERS",
-      15 : "JIGGLYPUFF",
-      16 : "SAMUS",
-      17 : "YOSHI",
-      18 : "ZELDA",
-      19 : "SHEIK",
-      20 : "FALCO",
-      21 : "YOUNG_LINK",
-      22 : "DR_MARIO",
-      23 : "ROY",
-      24 : "PICHU",
-      25 : "GANONDORF"
+    var charDict = {
+      0 : "Captain Falcon.png",
+      1 : "Donkey Kong.png",
+      2 : "Fox.png" ,
+      3 : "Game & Watch.png",
+      4 : "Kirby.png",
+      5 : "Bowser.png",
+      6 : "Link.png",
+      7 : "Luigi.png",
+      8 : "Mario.png",
+      9 : "Marth.png",
+      10 : "Mewtwo.png",
+      11 : "Ness.png",
+      12 : "Peach.png",
+      13 : "Pikachu.png",
+      14 : "Ice Climbers.png",
+      15 : "Jigglypuff.png",
+      16 : "Samus.png",
+      17 : "Yoshi.png",
+      18 : "Zelda.png",
+      19 : "Sheik.png",
+      20 : "Falco.png",
+      21 : "Young Link.png",
+      22 : "Dr. Mario.png",
+      23 : "Roy.png",
+      24 : "Pichu.png",
+      25 : "Ganondorf.png"
     }
-
-    var stockIconArr = [
-      'Captain Falcon.png', 'Donkey Kong.png', 'Fox.png', 'Game & Watch.png', 'Kirby.png', 'Link.png',
-      'Luigi.png', 'Mario.png', 'Marth.png', 'Mewtwo.png', 'Ness.png', 'Peach.png', 'Pikachu.png',
-      'Ice Climbers.png', 'Jigglypuff.png', 'Samus.png', 'Yoshi.png', 'Zelda.png', 'Sheik.png',
-      'Falco.png', 'Young Link.png', 'Dr. Mario.png', 'Roy.png', 'Pichu.png', 'Ganondorf.png'
-    ]
 
     var charUsage = [
       120,   0, 122,  0,  0, 0,  0,  0,
@@ -61,10 +54,24 @@ export default class App extends React.Component {
       return second[1] - first[1];
     });
 
-    console.log(items)
+    //console.log(items)
 
-    var charLabels = []
+    var charLabels = [];
+    var charData = [];
+    var charImage = [];
 
+    for (let j = 0; j < items.length; j++) {
+      if((items[j][1]) !== 0){
+        charLabels.push((charDict[items[j][0]]).replace(".png", ""))
+        charData.push(items[j][1]);
+        charImage.push(charDict[items[j][0]]);
+      }
+      
+    }
+
+    console.log(charLabels);
+    console.log(charData);
+    console.log(charImage);
 
     return (
       <div>
@@ -75,7 +82,11 @@ export default class App extends React.Component {
           percentage = {parseInt((100/300) * 100)}
         /> */}
 
-        <BarChart />
+        <BarChart 
+          charData = {charData}
+          charLabels = {charLabels}
+          charImage = {charImage}
+        />
       </div>
     );
   }
@@ -156,7 +167,7 @@ class BarChart extends React.Component {
         yAxis.ticks.forEach((value, index) => {  
           let y = yAxis.getPixelForTick(index);      
           let image = new Image();
-          image.src = "CaptainFalcon.png"
+          image.src = '/stock_icons/' + this.props.charImage[index]
           ctx.drawImage(image, xAxis.left - 30, y - 13, image.width*.36, image.width*.36);
           
         });  
@@ -169,11 +180,11 @@ class BarChart extends React.Component {
       <div>
         <HorizontalBar
           data={{
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple','Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test','Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test','Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test',],
+            labels: this.props.charLabels,
             datasets: [
               {
                 label: "'# of Votes'",
-                data: [12, 19, 3, 5, 2,12, 19, 3, 5, 2, 3,9,12, 19, 3, 5, 2, 3,9,12, 19, 3, 5, 2, 3,9,12, 19, 3, 5, 2, ],
+                data: this.props.charData,
                 backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',
