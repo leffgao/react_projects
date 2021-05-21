@@ -33,6 +33,65 @@ export default class App extends React.Component {
       25 : "Ganondorf.png"
     }
 
+    var charbackgroundColorDict = {
+      0 : 'rgba(255, 99, 132, 0.2)',
+      1 : 'rgba(255, 159, 64, 0.2)',
+      2 : 'rgba(255, 159, 64, 0.2)' ,
+      3 : 'rgba(153, 102, 255, 0.2)',
+      4 : 'rgba(255, 99, 132, 0.2)',
+      5 : 'rgba(75, 192, 192, 0.2)',
+      6 : 'rgba(75, 192, 192, 0.2)',
+      7 : 'rgba(75, 192, 192, 0.2)',
+      8 : 'rgba(255, 99, 132, 0.2)',
+      9 : 'rgba(54, 162, 235, 0.2)',
+      10 : 'rgba(153, 102, 255, 0.2)',
+      11 : 'rgba(255, 99, 132, 0.2)',
+      12 : 'rgba(255, 186, 0, 0.3)',
+      13 : 'rgba(255, 186, 0, 0.3)',
+      14 : 'rgba(54, 162, 235, 0.2)',
+      15 : 'rgba(255, 99, 132, 0.2)',
+      16 : 'rgba(255, 99, 132, 0.2)',
+      17 : 'rgba(75, 192, 192, 0.2)',
+      18 : 'rgba(255, 186, 0, 0.3)',
+      19 : 'rgba(54, 162, 235, 0.2)',
+      20 : 'rgba(54, 162, 235, 0.2)',
+      21 : 'rgba(75, 192, 192, 0.2)',
+      22 : 'rgba(54, 162, 235, 0.2)',
+      23 : 'rgba(255, 99, 132, 0.2)',
+      24 : 'rgba(255, 186, 0, 0.6)',
+      25 : 'rgba(255, 159, 64, 0.3)'
+    }
+
+    var charborderColorDict = {
+      0 : 'rgba(255, 99, 132, 1)',
+      1 : 'rgba(255, 159, 64, 1)',
+      2 : 'rgba(255, 159, 64, 1)' ,
+      3 : 'rgba(153, 102, 255, 1)',
+      4 : 'rgba(255, 99, 132, 1)',
+      5 : 'rgba(75, 192, 192, 1)',
+      6 : 'rgba(75, 192, 192, 1)',
+      7 : 'rgba(75, 192, 192, 1)',
+      8 : 'rgba(255, 99, 132, 1)',
+      9 : 'rgba(54, 162, 235, 1)',
+      10 : 'rgba(153, 102, 255, 1)',
+      11 : 'rgba(255, 99, 132, 1)',
+      12 : 'rgba(255, 186, 0, 1)',
+      13 : 'rgba(255, 186, 0, 1)',
+      14 : 'rgba(54, 162, 235, 1)',
+      15 : 'rgba(255, 99, 132, 1)',
+      16 : 'rgba(255, 99, 132, 1)',
+      17 : 'rgba(75, 192, 192, 1)',
+      18 : 'rgba(255, 186, 0, 1)',
+      19 : 'rgba(54, 162, 235, 1)',
+      20 : 'rgba(54, 162, 235, 1)',
+      21 : 'rgba(75, 192, 192, 1)',
+      22 : 'rgba(54, 162, 235, 1)',
+      23 : 'rgba(255, 99, 132, 1)',
+      24 : 'rgba(255, 186, 0, 1)',
+      25 : 'rgba(255, 159, 64, 1)'
+    }
+
+
     var charUsage = [
       120,   0, 122,  0,  0, 0,  0,  0,
         0, 107,   0,  0, 43, 0, 14, 76,
@@ -59,12 +118,16 @@ export default class App extends React.Component {
     var charLabels = [];
     var charData = [];
     var charImage = [];
+    var charbackgroundColor = [];
+    var charborderColor = []
 
     for (let j = 0; j < items.length; j++) {
       if((items[j][1]) !== 0){
         charLabels.push((charDict[items[j][0]]).replace(".png", ""))
         charData.push(items[j][1]);
         charImage.push(charDict[items[j][0]]);
+        charbackgroundColor.push(charbackgroundColorDict[items[j][0]]);
+        charborderColor.push(charborderColorDict[items[j][0]]);
       }
       
     }
@@ -86,6 +149,8 @@ export default class App extends React.Component {
           charData = {charData}
           charLabels = {charLabels}
           charImage = {charImage}
+          charbackgroundColor = {charbackgroundColor}
+          charborderColor = {charborderColor}
         />
       </div>
     );
@@ -174,8 +239,6 @@ class BarChart extends React.Component {
         ctx.restore();    
     }}];
   
-
-
     return (
       <div>
         <HorizontalBar
@@ -185,66 +248,8 @@ class BarChart extends React.Component {
               {
                 label: "'# of Votes'",
                 data: this.props.charData,
-                backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                ],
-                borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)',
-                  'rgba(255, 159, 64, 0.2)',
-                ],
+                backgroundColor: this.props.charbackgroundColor,
+                borderColor: this.props.charborderColor,
                 borderWidth: 1,
               },
             ],
@@ -265,8 +270,11 @@ class BarChart extends React.Component {
                   beginAtZero: true
                 }
               }],
-            }
-
+            },
+            tooltips: {
+              xAlign:  'left',
+              yAlign: 'center'
+            },             
           }}
           plugins={plugins}
         />
