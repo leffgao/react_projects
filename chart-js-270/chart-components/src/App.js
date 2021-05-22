@@ -34,6 +34,39 @@ export default class App extends React.Component {
       25 : "Ganondorf.png"
     }
 
+    var stageDict = {
+      2 : "Fountain Of Dreams.png",
+      3 : "Pokemon Stadium.png",
+      4 : "Peachs Castle.png",
+      5 : "Kongo Jungle.png",
+      6 : "Brinstar.png",
+      7 : "Corneria.png",
+      8 : "Yoshis Story.png",
+      9 : "Onett.png",
+      10 : "Mute City.png",
+      11 : "Rainbow Cruise.png",
+      12 : "Jungle Japes.png",
+      13 : "Great Bay.png",
+      14 : "Hyrule Temple.png",
+      15 : "Brinstar Depths.png",
+      16 : "Yoshis Island.png",
+      17 : "Green Greens.png",
+      18 : "Fourside.png",
+      19 : "Mushroom Kingdom.png",
+      20 : "Mushroom Kingdom 2.png",
+      22 : "Venom.png",
+      23 : "Poke Floats.png",
+      24 : "Big Blue.png",
+      25 : "Icicle Mountain.png",
+      26 : "Icetop.png",
+      27 : "Flat Zone.png",
+      28 : "Dreamland.png",
+      29 : "Yoshis Island N64.png",
+      30 : "Kongo Jungle N64.png",
+      31 : "Battlefield.png",
+      32 : "Final Destination.png"
+    }
+
     var charbackgroundColorDict = {
       0 : 'rgba(255, 99, 132, 0.2)',
       1 : 'rgba(170, 85, 0, 0.2)',
@@ -165,13 +198,36 @@ export default class App extends React.Component {
        0,  0
     ]
 
+    var stageWins = [
+      0,  0, 45, 53,  0,  0, 4, 3, 45,
+      0,  1,  2,  2,  0,  0, 0, 0,  1,
+      0,  0,  0,  0,  0,  0, 0, 0,  0,
+      0, 49,  0,  4, 41, 42
+    ]
+
+    var stageLoss = [
+      0,  0, 37, 43,  0,  0, 1, 1, 36,
+      0,  0,  0,  2,  0,  0, 0, 0,  1,
+      0,  0,  0,  0,  0,  1, 0, 0,  0,
+      0, 37,  0,  0, 41, 42
+    ]
+
+    var stageUsage = []
+
+    for (let k = 0; k < stageWins.length; k++) {
+      stageUsage[k] = stageWins[k] + stageLoss[k]
+      
+    }
+
     var vsTitle = "Winrate % Vs Character"
 
     var charUseTitle = "Character Usage";
 
-    var vsUseTitle = "Opponent Character Usage"
+    var vsUseTitle = "Opponent Character Usage";
 
-    function characterBarChartData(charUsage, charWins, charLoss, title){
+    var stageTitle = "Stage Winrate %"
+
+    function characterBarChartData(myDict, charUsage, charWins, charLoss, title){
       var dict = {}
       var windict = {}
       var lossdict = {}
@@ -200,7 +256,7 @@ export default class App extends React.Component {
   
       for (let j = 0; j < items.length; j++) {
         if((items[j][1]) !== 0){
-          charLabels.push((charDict[items[j][0]]).replace(".png", "") + " (" + items[j][1] + " games)")
+          charLabels.push((myDict[items[j][0]]).replace(".png", "") + " (" + items[j][1] + " games)")
   
           var wins = charWins[items[j][0]];
           var loss = charLoss[items[j][0]];
@@ -211,7 +267,7 @@ export default class App extends React.Component {
             charData.push(parseInt (wins/(wins+loss)* 100) ) 
           }
   
-          charImage.push(charDict[items[j][0]]);
+          charImage.push(myDict[items[j][0]]);
           charbackgroundColor.push(charbackgroundColorDict[items[j][0]]);
           charborderColor.push(charborderColorDict[items[j][0]]);
         }    
@@ -224,6 +280,65 @@ export default class App extends React.Component {
                 charbackgroundColor = {charbackgroundColor}
                 charborderColor = {charborderColor}
                 title = {title}
+                type = 'char'
+    />
+
+    }
+
+    function stageBarChartData(myDict, charUsage, charWins, charLoss, title){
+      var dict = {}
+      var windict = {}
+      var lossdict = {}
+  
+      for (let i = 0; i < charUsage.length; i++) {        
+        dict[i] = charUsage[i];
+        windict[i] = charWins[i];
+        lossdict[i] = charLoss[i];
+      }
+  
+      var items = Object.keys(dict).map(function(key) {
+        return [key, dict[key]];
+      });
+  
+      items.sort(function(first, second) {
+        return second[1] - first[1];
+      });
+  
+      console.log(items)
+  
+      var charLabels = [];
+      var charData = [];
+      var charImage = [];
+      var charbackgroundColor = [];
+      var charborderColor = []
+  
+      for (let j = 0; j < items.length; j++) {
+        if((items[j][1]) !== 0){
+          charLabels.push((myDict[items[j][0]]).replace(".png", "") + " (" + items[j][1] + " games)")
+  
+          var wins = charWins[items[j][0]];
+          var loss = charLoss[items[j][0]];
+  
+          if(wins == 0){
+            charData.push(0) 
+          }else{
+            charData.push(parseInt (wins/(wins+loss)* 100) ) 
+          }
+  
+          charImage.push(myDict[items[j][0]]);
+          charbackgroundColor.push(charbackgroundColorDict[items[j][0]]);
+          charborderColor.push(charborderColorDict[items[j][0]]);
+        }    
+      }
+  
+      return < StageBarChart 
+                charData = {charData.slice(0,6)}
+                charLabels = {charLabels.slice(0,6)}
+                charImage = {charImage}
+                charbackgroundColor = {charbackgroundColor}
+                charborderColor = {charborderColor}
+                title = {title}
+                type = 'char'
     />
 
     }
@@ -298,11 +413,14 @@ export default class App extends React.Component {
           percentage = {parseInt((200/300) * 100)}
         />
 
-      {characterBarChartData(charUsage, charWins, charLoss, asTitle)}
-      {characterBarChartData(vsUsage, vsWins, vsLoss, vsTitle)} */}
-
       {characterPieChart(charUsage,charUseTitle)}
       {characterPieChart(vsUsage,vsUseTitle)}
+
+      {characterBarChartData(charDict, charUsage, charWins, charLoss, asTitle)}
+      {characterBarChartData(charDict, vsUsage, vsWins, vsLoss, vsTitle)} */}
+
+      {stageBarChartData(stageDict, stageUsage, stageWins, stageLoss, vsTitle)}
+
 
       </div>
     );
@@ -364,6 +482,9 @@ class Donut extends React.Component {
                     color: color
                   }
                 ]
+              },
+              labels: {
+                fontSize: 0
               }
             }
           }}
@@ -384,8 +505,10 @@ class BarChart extends React.Component {
         yAxis.ticks.forEach((value, index) => {  
           let y = yAxis.getPixelForTick(index);      
           let image = new Image();
-          image.src = '/stock_icons/' + this.props.charImage[index]
-          ctx.drawImage(image, xAxis.left - 30, y - 13, image.width*.36, image.width*.36);
+          image.src =  '/stock_icons/' + this.props.charImage[index]
+
+            ctx.drawImage(image, xAxis.left - 30, y - 13, image.width*.36, image.height*.36);
+
           
         });  
         ctx.restore();    
@@ -411,7 +534,89 @@ class BarChart extends React.Component {
               padding: {
                 right: 140,
                 left: 50,
-                top: 50
+                top: 50,
+                bottom: 50
+              }
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  display: false,
+                  beginAtZero: true,                  
+                },
+              }],
+              xAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                },
+                gridLines: {
+                  
+                }
+              }],
+            },
+            tooltips: {
+              xAlign:  'left',
+              yAlign: 'center'
+            }, 
+            title: {
+              display: true,
+              text: this.props.title,
+              fontSize: 20
+            },
+            legend: {
+              display: false
+            }
+                        
+          }}
+          plugins={plugins}
+        />
+      </div>
+    );
+  }
+}
+
+class StageBarChart extends React.Component {
+  render() {
+    const plugins = [{
+      afterDraw: chart => {
+        let ctx = chart.chart.ctx; 
+        ctx.save();
+        let xAxis = chart.scales['x-axis-0'];
+        let yAxis = chart.scales['y-axis-0'];
+        yAxis.ticks.forEach((value, index) => {  
+          let y = yAxis.getPixelForTick(index);      
+          let image = new Image();
+          image.src =  '/stock_icons/' + this.props.charImage[index]
+
+            ctx.drawImage(image, xAxis.left - 125, y - 48, image.width*.13, image.height*.13);
+
+          
+        });  
+        ctx.restore();    
+    }}];
+  
+    return (
+      <div>
+        <HorizontalBar
+          data={{
+            labels: this.props.charLabels,
+            datasets: [
+              {
+                label: "Winrate %",
+                data: this.props.charData,
+                backgroundColor: this.props.charbackgroundColor,
+                borderColor: this.props.charborderColor,
+                borderWidth: 1,
+              },
+            ],
+          }}
+          options={{            
+            layout: {
+              padding: {
+                right: 140,
+                left: 150,
+                top: 50,
+                bottom: 50
               }
             },
             scales: {
