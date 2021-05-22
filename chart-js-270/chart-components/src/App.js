@@ -167,7 +167,9 @@ export default class App extends React.Component {
 
     var vsTitle = "Winrate % Vs Character"
 
-    var charUseTitle = "Chartacter Usage"
+    var charUseTitle = "Character Usage";
+
+    var vsUseTitle = "Opponent Character Usage"
 
     function characterBarChartData(charUsage, charWins, charLoss, title){
       var dict = {}
@@ -300,6 +302,7 @@ export default class App extends React.Component {
       {characterBarChartData(vsUsage, vsWins, vsLoss, vsTitle)} */}
 
       {characterPieChart(charUsage,charUseTitle)}
+      {characterPieChart(vsUsage,vsUseTitle)}
 
       </div>
     );
