@@ -1,9 +1,39 @@
 import React from 'react';
-import {Doughnut, HorizontalBar, Pie} from 'react-chartjs-2';
+import {Bar, Doughnut, HorizontalBar, Pie} from 'react-chartjs-2';
 import "chartjs-plugin-doughnutlabel";
 import "chartjs-plugin-labels";
 
 export default class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.onChangeNeutralCheck = this.onChangeNeutralCheck.bind(this);
+    this.onChangeCounterhitCheck = this.onChangeCounterhitCheck.bind(this);
+
+    this.state = {
+      isNeutral: false,
+      isCounterhit: false
+    }
+
+  }
+
+  onChangeNeutralCheck(e) {
+    const isNeutral = e.target.checked;
+
+    this.setState({
+      isNeutral: isNeutral
+    })
+  }
+
+  onChangeCounterhitCheck(e) {
+    const isCounterhit = e.target.checked;
+
+    this.setState({
+      isCounterhit: isCounterhit
+    })
+
+    
+  }
+
   render() {
     var charDict = {
       0 : "Captain Falcon.png",
@@ -404,6 +434,10 @@ export default class App extends React.Component {
 
     }
 
+    function movesBarChart(){
+
+    }
+
     return (
       <div>
         {/* <Donut 
@@ -413,14 +447,34 @@ export default class App extends React.Component {
           percentage = {parseInt((200/300) * 100)}
         />
 
-      {characterPieChart(charUsage,charUseTitle)}
+      
       {characterPieChart(vsUsage,vsUseTitle)}
 
       {characterBarChartData(charDict, charUsage, charWins, charLoss, asTitle)}
       {characterBarChartData(charDict, vsUsage, vsWins, vsLoss, vsTitle)} */}
 
-      {stageBarChartData(stageDict, stageUsage, stageWins, stageLoss, vsTitle)}
+      {/* {stageBarChartData(stageDict, stageUsage, stageWins, stageLoss, vsTitle)} */}
 
+      {/* {characterPieChart(charUsage,charUseTitle)} */}
+      <label>
+        <input
+          name="isNeutral"
+          type="checkbox"
+          value={this.state.isNeutral}
+          onChange={this.onChangeNeutralCheck}
+        />
+          Neutral
+      </label>
+      <label>
+        <input
+          name="isCounterhit"
+          type="checkbox"
+          value={this.state.isCounterhit}
+          onChange={this.onChangeOnlyComplete}
+        />
+          Counterhit
+      </label>
+      <MovesBarChart/>
 
       </div>
     );
@@ -673,8 +727,7 @@ class PieChart extends React.Component {
               }
             ]
           }}
-          options={{
-            
+          options={{     
             title:{
               display: true,
               text: this.props.title,
@@ -693,8 +746,89 @@ class PieChart extends React.Component {
                 render: "image",
                 images: this.props.charImage
               }
+            },
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, data) {
+                  var dataset = data.datasets[tooltipItem.datasetIndex];
+                  var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                    return previousValue + currentValue;
+                  });
+
+                  var currentValue = dataset.data[tooltipItem.index];
+                  var oglabel = data.labels[tooltipItem.index];
+                  var precentage = Math.floor(((currentValue/total) * 100)+0.5);         
+                  return oglabel + " : " + precentage + "%";
+                }
+              }
             }
           }}
+        />
+      </div>
+    )
+  }
+}
+
+class MovesBarChart extends React.Component {
+  // Example data
+  // [
+  //   {
+  //     label: '# of Red Votes',
+  //     data: [12, 19, 3, 5, 2, 3],
+  //     backgroundColor: 'rgb(255, 99, 132)',
+  //     stack: 'Stack 0'
+  //   },
+  //   {
+  //     label: '# of Blue Votes',
+  //     data: [2, 3, 20, 5, 1, 4],
+  //     backgroundColor: 'rgb(54, 162, 235)',
+  //     stack: 'Stack 0'
+  //   },
+  //   {
+  //     label: '# of Green Votes',
+  //     data: [3, 10, 13, 15, 22, 30],
+  //     backgroundColor: 'rgb(75, 192, 192)',
+  //     stack: 'Stack 1'
+  //   },
+  //   {
+  //     label: '# of Green Votes',
+  //     data: [3, 10, 13, 15, 22, 30],
+  //     backgroundColor: 'rgb(0, 150, 255)',
+  //     stack: 'Stack 1'
+  //   },
+  // ]
+  render(){
+    return(
+      <div>
+        <Bar
+         data = {{
+          labels: ['1', '2', '3', '4', '5', '6'],
+          datasets: this.props.dataset,
+        }}
+        
+         options = {{
+          scales: {
+            yAxes: [
+              {
+                stacked: true,
+                ticks: {
+                  beginAtZero: true,
+                },
+              },
+            ],
+            xAxes: [
+              {
+                stacked: true,
+              },
+            ],
+          },
+          plugins: {
+            labels: {
+              render: "image",
+              images: ''
+            }
+          }
+        }}
         />
       </div>
     )
