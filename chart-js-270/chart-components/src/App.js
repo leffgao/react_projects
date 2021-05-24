@@ -6,32 +6,65 @@ import "chartjs-plugin-labels";
 export default class App extends React.Component {
   constructor(props){
     super(props);
-    this.onChangeNeutralCheck = this.onChangeNeutralCheck.bind(this);
-    this.onChangeCounterhitCheck = this.onChangeCounterhitCheck.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.movesBarChart = this.movesBarChart.bind(this);
 
     this.state = {
       isNeutral: false,
-      isCounterhit: false
+      isCounterhit: false,
+      dataset: []
     }
 
   }
 
-  onChangeNeutralCheck(e) {
-    const isNeutral = e.target.checked;
+  handleInputChange(e){
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
 
     this.setState({
-      isNeutral: isNeutral
+       [name]: value
     })
   }
 
-  onChangeCounterhitCheck(e) {
-    const isCounterhit = e.target.checked;
+  movesBarChart(){
+    this.state.dataset.splice(0, this.state.dataset.length);
 
-    this.setState({
-      isCounterhit: isCounterhit
-    })
+    if(this.state.isNeutral){
+      this.state.dataset.push(
+          {
+            label: '# of Red Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: 'rgb(255, 99, 132)',
+            stack: 'neutral'
+          },
+          {
+            label: '# of Blue Votes',
+            data: [2, 3, 20, 5, 1, 4],
+            backgroundColor: 'rgb(54, 162, 235)',
+            stack: 'neutral'
+          }
+        )
+    }
 
-    
+    if(this.state.isCounterhit){
+      this.state.dataset.push(
+            {
+              label: '# of Green Votes',
+              data: [3, 10, 13, 15, 22, 30],
+              backgroundColor: 'rgb(75, 192, 192)',
+              stack: 'counter'
+            },
+            {
+              label: '# of Team Votes',
+              data: [13, 20, 1, 3, 6, 8],
+              backgroundColor: 'rgb(0, 150, 255)',
+              stack: 'counter'
+            }
+      )
+    }
+
+
   }
 
   render() {
@@ -433,13 +466,18 @@ export default class App extends React.Component {
     />
 
     }
-
-    function movesBarChart(){
-
-    }
-
+  
     return (
+    
       <div>
+        {console.log(
+          'Neutral: ' + this.state.isNeutral 
+          + '\nCounterhit: ' + this.state.isCounterhit           
+          )}
+
+        {this.movesBarChart()}
+
+        {console.log(this.state.dataset)}
         {/* <Donut 
           labels={['Loss', 'Wins']}
           data={[100, 200]}
@@ -461,7 +499,7 @@ export default class App extends React.Component {
           name="isNeutral"
           type="checkbox"
           value={this.state.isNeutral}
-          onChange={this.onChangeNeutralCheck}
+          onChange={this.handleInputChange}
         />
           Neutral
       </label>
@@ -470,12 +508,13 @@ export default class App extends React.Component {
           name="isCounterhit"
           type="checkbox"
           value={this.state.isCounterhit}
-          onChange={this.onChangeOnlyComplete}
+          onChange={this.handleInputChange}
         />
           Counterhit
       </label>
-      <MovesBarChart/>
-
+      <MovesBarChart
+        dataset = {this.state.dataset}
+      />
       </div>
     );
   }
