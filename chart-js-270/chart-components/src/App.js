@@ -2,6 +2,7 @@ import React from 'react';
 import {Bar, Doughnut, HorizontalBar, Pie} from 'react-chartjs-2';
 import "chartjs-plugin-doughnutlabel";
 import "chartjs-plugin-labels";
+import Chart from 'chart.js';
 
 export default class App extends React.Component {
   constructor(props){
@@ -10,7 +11,7 @@ export default class App extends React.Component {
     this.movesBarChart = this.movesBarChart.bind(this);
 
     this.state = {
-      isNeutral: false,
+      isNeutral: true,
       isCounterhit: false,
       dataset: []
     }
@@ -33,7 +34,7 @@ export default class App extends React.Component {
     if(this.state.isNeutral){
       this.state.dataset.push(
           {
-            label: '# of Red Votes',
+            label: 'Fox',
             data: [12, 19, 3, 5, 2, 3],
             backgroundColor: 'rgb(255, 99, 132)',
             stack: 'neutral'
@@ -490,7 +491,7 @@ export default class App extends React.Component {
 
       {characterBarChartData(charDict, charUsage, charWins, charLoss, asTitle)}
       {characterBarChartData(charDict, vsUsage, vsWins, vsLoss, vsTitle)} */}
-
+{/* {characterBarChartData(charDict, charUsage, charWins, charLoss, asTitle)} */}
       {/* {stageBarChartData(stageDict, stageUsage, stageWins, stageLoss, vsTitle)} */}
 
       {/* {characterPieChart(charUsage,charUseTitle)} */}
@@ -836,7 +837,17 @@ class MovesBarChart extends React.Component {
   //     stack: 'Stack 1'
   //   },
   // ]
+
+  
   render(){
+    Chart.Tooltip.positioners.middle = elements => {
+      let model = elements[0]._model;
+      return {
+        x: model.x,
+        y: (model.base + model.y) / 2
+      };
+    };
+
     return(
       <div>
         <Bar
@@ -865,6 +876,21 @@ class MovesBarChart extends React.Component {
             labels: {
               render: "image",
               images: ''
+            }
+          },
+          tooltips: {
+            xAlign: 'center',
+            yAlign: 'center',
+            position: 'middle',
+            callbacks: {
+              label: function(tooltipItem, data) {
+                var dataset = data.datasets[tooltipItem.datasetIndex];
+                return dataset.data[tooltipItem.index];
+              },
+              title: function(tooltipItem, data) {
+                return data.datasets[tooltipItem[0].datasetIndex].label
+              }
+              
             }
           }
         }}
