@@ -291,6 +291,248 @@ export default class App extends React.Component {
 
     var stageTitle = "Stage Winrate %"
 
+    var neutralWins = [
+      [
+        1,   0, 91,  13,   6,  6, 4, 13,   0, 6, 4, 3,
+        2, 279, 62, 130, 162, 89, 1, 37,   2, 1, 0, 0,
+        0,   0,  0,   0,   0,  0, 0,  0,   0, 0, 0, 0,
+        0,   0,  0,   0,   0,  0, 0,  0,   0, 0, 0, 0,
+        0,   0,  0,   0,  35,  3, 6,  4, 114, 0, 0, 0,
+        0,   0,  1
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0,   3, 25,   'a',  'a',   'a', 38,  5, 47,  10, 4, 47,
+        2, 235, 32, 143, 17, 151,  5,  5,  7, 209, 0,  0,
+        0,   0,  0,   0,  0,   0,  0,  0,  0,   0, 0,  0,
+        0,   0,  0,   0,  0,   0,  0,  0,  0,   0, 0,  0,
+        0,   0,  'a',   'a', 19,   5,  9, 66,  'a',   0, 0,  0,
+        0,   'a',  'a'
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0,  0,  22,  1,  0,  0, 41, 13, 87, 37, 44, 1,
+        8, 69, 216, 19, 56, 56, 11, 29, 10,  7,  0, 0,
+        0,  0,   0,  0,  0,  0,  0,  0,  0,  0,  0, 0,
+        0,  0,   0,  0,  0,  0,  0,  0,  0,  0,  0, 0,
+        0,  0,   0,  0, 65, 49, 11, 52, 48,  0,  0, 0,
+        0,  0,   1
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        1,   26, 10, 1,
+        0,   0,  56, 3,
+        0,   1,  2,  1,
+        22,  73, 46, 63,
+        24,  7,  0,  0,
+        14,  0,  0,  0,
+        0,   0,  0,  0,
+        0,   0,  0,  0,
+        0,   0,  0,  0,
+        0,   0,  0,  0,
+        0,   0,  0,  0,
+        0,   0,  0,  0,
+        0,   0,  0,  0,
+        7,   7,  3,  8,
+        1,   0,  0,  0,
+        0,   0,  0,
+        NaN
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        8, 0, 7,  0,  0, 0,  4, 1, 1, 0, 5, 1,
+        6, 2, 2, 15,  8, 5, 13, 3, 0, 2, 0, 0,
+        0, 0, 0,  0,  0, 0,  0, 0, 0, 0, 0, 0,
+        0, 0, 0,  0,  0, 0,  0, 0, 0, 0, 0, 0,
+        0, 0, 0,  0, 10, 1,  1, 1, 2, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0,  1,  4,   0,  0,  0, 23,  4, 10,  1, 14, 13,
+        3, 57, 44, 137, 82, 44,  2, 26,  0, 10,  0,  0,
+        0,  0,  0,   0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,   0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,   0,  5, 23, 20, 29,  6,  0,  0,  0,
+        0,  0,  1
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+         0,  0,  37,  2,  0, 1, 45, 63,  9, 7, 0, 3,
+        21, 39, 132, 96,  8, 0, 56,  0,  0, 0, 0, 0,
+         0,  0,   0,  0,  0, 0,  0,  0,  0, 0, 0, 0,
+         0,  0,   0,  0,  0, 0,  0,  0,  0, 0, 0, 0,
+         0,  0,   0,  0, 27, 5, 14,  0, 35, 0, 0, 0,
+         0,  0,   1
+      ],
+      [
+        0,  0, 18,  0, 0,   0,  20, 6, 45,  10, 12, 3,
+        5, 60, 12, 71, 8, 146, 331, 7,  2, 106,  0, 0,
+        0,  0,  0,  0, 0,   0,   0, 0,  0,   0,  0, 0,
+        0,  0,  0,  0, 0,   0,   0, 0,  0,   0,  0, 0,
+        0,  0,  0,  0, 8,   5,   4, 5,  1,   0,  0, 0,
+        0,  0,  0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0
+      ]
+    ]
+
+    var counterHits = 
+    [
+      2,   0, 42,  6,   1,  0, 6, 19,  1, 18, 5, 1,
+      5, 113, 55, 44, 162, 46, 2, 28, 17,  7, 0, 0,
+      0,   0,  0,  0,   0,  0, 0,  0,  0,  0, 0, 0,
+      0,   0,  0,  0,   0,  0, 0,  0,  0,  0, 0, 0,
+      0,   0, 17, 15,  59,  1, 1,  4, 42,  0, 0, 0,
+      0,   4,  8
+    ]
+    
+
+    // console.log(neutralWins[2])
+    
+    // var b = neutralWins[2].splice(1,21);
+    // var c = b.concat(neutralWins[2].splice(29,7))
+    // var d = c.concat(neutralWins[2].splice(33))
+
+    // console.log(d)
+
+
     function characterBarChartData(myDict, charUsage, charWins, charLoss, title){
       var dict = {}
       var windict = {}
@@ -468,18 +710,57 @@ export default class App extends React.Component {
 
     }
   
+    function movesBarChartData(charUsage, title){
+      var dict = {}
+  
+      for (let i = 0; i < charUsage.length; i++) {        
+        dict[i] = charUsage[i];
+      }
+  
+      var items = Object.keys(dict).map(function(key) {
+        return [key, dict[key]];
+      });
+  
+      items.sort(function(first, second) {
+        return second[1] - first[1];
+      });
+  
+
+  
+      var charData = [];
+      var charbackgroundColor = [];
+      var charborderColor = [];
+      var charhoverColor = [];
+
+
+      for (let j = 0; j < items.length; j++) {
+        if((items[j][1]) !== 0){
+          charData.push(items[j][1]);
+
+          charbackgroundColor.push(charbackgroundColorDict[items[j][0]]);
+          charborderColor.push(charborderColorDict[items[j][0]]);
+          charhoverColor.push(charhoverColorDict[items[j][0]]);
+        }    
+      }
+  
+
+
+    }
+
     return (
     
       <div>
-        {console.log(
+        {/* {console.log(
           'Neutral: ' + this.state.isNeutral 
           + '\nCounterhit: ' + this.state.isCounterhit           
-          )}
+          )} */}
 
         {this.movesBarChart()}
+        {movesBarChartData(charUsage, vsTitle)}
 
-        {console.log(this.state.dataset)}
-        {/* <Donut 
+        {/* {console.log(this.state.dataset)} */}
+
+        <Donut 
           labels={['Loss', 'Wins']}
           data={[100, 200]}
           title='Winrate'
@@ -487,14 +768,15 @@ export default class App extends React.Component {
         />
 
       
+      {characterPieChart(charUsage,charUseTitle)}
       {characterPieChart(vsUsage,vsUseTitle)}
 
       {characterBarChartData(charDict, charUsage, charWins, charLoss, asTitle)}
-      {characterBarChartData(charDict, vsUsage, vsWins, vsLoss, vsTitle)} */}
-{/* {characterBarChartData(charDict, charUsage, charWins, charLoss, asTitle)} */}
-      {/* {stageBarChartData(stageDict, stageUsage, stageWins, stageLoss, vsTitle)} */}
+      {characterBarChartData(charDict, vsUsage, vsWins, vsLoss, vsTitle)}
 
-      {/* {characterPieChart(charUsage,charUseTitle)} */}
+      {stageBarChartData(stageDict, stageUsage, stageWins, stageLoss, 'Stage wins')}
+
+
       <label>
         <input
           name="isNeutral"
@@ -513,9 +795,6 @@ export default class App extends React.Component {
         />
           Counterhit
       </label>
-      <MovesBarChart
-        dataset = {this.state.dataset}
-      />
       </div>
     );
   }
@@ -563,7 +842,7 @@ class Donut extends React.Component {
             legend:{
               display:true,
               position:'bottom',
-              reverse: true
+              reverse: true,
             },
             plugins: {
               doughnutlabel: {
@@ -579,7 +858,7 @@ class Donut extends React.Component {
               },
               labels: {
                 fontSize: 0
-              }
+              },
             }
           }}
         />
@@ -810,35 +1089,6 @@ class PieChart extends React.Component {
 }
 
 class MovesBarChart extends React.Component {
-  // Example data
-  // [
-  //   {
-  //     label: '# of Red Votes',
-  //     data: [12, 19, 3, 5, 2, 3],
-  //     backgroundColor: 'rgb(255, 99, 132)',
-  //     stack: 'Stack 0'
-  //   },
-  //   {
-  //     label: '# of Blue Votes',
-  //     data: [2, 3, 20, 5, 1, 4],
-  //     backgroundColor: 'rgb(54, 162, 235)',
-  //     stack: 'Stack 0'
-  //   },
-  //   {
-  //     label: '# of Green Votes',
-  //     data: [3, 10, 13, 15, 22, 30],
-  //     backgroundColor: 'rgb(75, 192, 192)',
-  //     stack: 'Stack 1'
-  //   },
-  //   {
-  //     label: '# of Green Votes',
-  //     data: [3, 10, 13, 15, 22, 30],
-  //     backgroundColor: 'rgb(0, 150, 255)',
-  //     stack: 'Stack 1'
-  //   },
-  // ]
-
-  
   render(){
     Chart.Tooltip.positioners.middle = elements => {
       let model = elements[0]._model;
@@ -852,11 +1102,14 @@ class MovesBarChart extends React.Component {
       <div>
         <Bar
          data = {{
-          labels: ['1', '2', '3', '4', '5', '6'],
+          labels: ['Jab', 'Nair', '3', '4', '5', '6'],
           datasets: this.props.dataset,
         }}
         
          options = {{
+          layout:{
+            padding: 100
+          },
           scales: {
             yAxes: [
               {
@@ -879,13 +1132,13 @@ class MovesBarChart extends React.Component {
             }
           },
           tooltips: {
-            xAlign: 'center',
+            
             yAlign: 'center',
             position: 'middle',
             callbacks: {
               label: function(tooltipItem, data) {
                 var dataset = data.datasets[tooltipItem.datasetIndex];
-                return dataset.data[tooltipItem.index];
+                return data.labels[tooltipItem.index] + ' ' + dataset.stack + ': ' + dataset.data[tooltipItem.index];
               },
               title: function(tooltipItem, data) {
                 return data.datasets[tooltipItem[0].datasetIndex].label
