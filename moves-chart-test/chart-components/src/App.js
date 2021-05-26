@@ -651,6 +651,118 @@ export default class App extends React.Component {
       ]
     ]
     
+    var actioncount =[
+      [
+        1000, 777, 254,
+        2872,  74, 627,
+         325
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        2536, 989,  396,
+        3438, 193, 1028,
+         250
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        1904, 869,  215,
+        2354,  76, 1138,
+         122
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        188,  33, 70, 696,
+         40, 135, 90
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        250, 119, 33, 134,
+         16,  98, 26
+      ],
+      [
+        877, 218, 117,
+        101,  79, 694,
+        147
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        824, 554, 136,
+        556,  92, 653,
+        164
+      ],
+      [
+        1123, 565, 277,
+         694, 169, 539,
+         171
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        24, 13, 4, 9,
+         0,  7, 3
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ]
+    ]
 
     // console.log(neutralWins[2])
     
@@ -701,8 +813,44 @@ export default class App extends React.Component {
       myNeutral = condenseMovesArr(neutralArr, items)
       myCounter = condenseMovesArr(counterArr, items)
       
+    }
 
-      
+    function actionsBarChartData(charUsage, actionArr){
+      // creates sorted 2d array for character id and character usage
+      var dict = {}
+
+      for (let i = 0; i < charUsage.length; i++) {        
+        dict[i] = charUsage[i];
+      }
+  
+      items = Object.keys(dict).map(function(key) {
+        return [key, dict[key]];
+      });
+  
+      items.sort(function(first, second) {
+        return second[1] - first[1];
+      });
+
+      var orderedActionsArr = []
+
+      for (let i = 0; i < items.length; i++) {
+        if(items[i][1] !== 0){
+          orderedActionsArr.push(
+            {
+              label: (charDict[items[i][0]]).replace(".png", ""),
+              data: actionArr[items[i][0]],
+              backgroundColor: charbackgroundColorDict[items[i][0]],
+              borderColor: charborderColorDict[items[i][0]],
+              borderWidth: 1,
+            }
+          )
+        }
+        
+      }
+
+
+      console.log(orderedActionsArr);
+      return orderedActionsArr;
 
     }
 
@@ -714,8 +862,9 @@ export default class App extends React.Component {
           + '\nCounterhit: ' + this.state.isCounterhit           
           )} */}
 
-        {movesBarChartData(charUsage, neutralWins, counterHits, 'Moves Usage')}
-        {this.movesBarChart(charDict, charbackgroundColorDict, charborderColorDict, myNeutral, myCounter, items)}
+
+        {/* {movesBarChartData(charUsage, neutralWins, counterHits, 'Moves Usage')}
+        {this.movesBarChart(charDict, charbackgroundColorDict, charborderColorDict, myNeutral, myCounter, items)} */}
         
 
         {/* {console.log(this.state.dataset)} */}
@@ -740,8 +889,8 @@ export default class App extends React.Component {
         />
           Counterhit
       </label>
-      <MovesBarChart
-        dataset = {this.state.dataset}
+      <ActionsBarChart
+        dataset = {actionsBarChartData(charUsage, actioncount)}
       />
       </div>
     );
@@ -754,7 +903,7 @@ class MovesBarChart extends React.Component {
       let model = elements[0]._model;
       return {
         x: model.x,
-        y: (model.base + model.y) / 2
+        y: ((model.base + model.y) / 2) - 20
       };
     };
 
@@ -801,6 +950,70 @@ class MovesBarChart extends React.Component {
               label: function(tooltipItem, data) {
                 var dataset = data.datasets[tooltipItem.datasetIndex];
                 return data.labels[tooltipItem.index] + ' ' + dataset.stack + ': ' + dataset.data[tooltipItem.index];
+              },
+              title: function(tooltipItem, data) {
+                return data.datasets[tooltipItem[0].datasetIndex].label
+              }
+              
+            }
+          }
+        }}
+        />
+      </div>
+    )
+  }
+}
+
+class ActionsBarChart extends React.Component {
+  render(){
+    Chart.Tooltip.positioners.middle = elements => {
+      let model = elements[0]._model;
+      return {
+        x: model.x,
+        y: ((model.base + model.y) / 2) - 20
+      };
+    };
+
+    return(
+      <div>
+        <Bar
+         data = {{
+          labels: ['Wavedash', 'Waveland', 'Air Dodge', 'Dash Dance', 'Spot Dodge', 'Ledge Grab', 'Roll'],
+          datasets: this.props.dataset,
+        }}
+        
+         options = {{
+          layout:{
+            padding: 100
+          },
+          scales: {
+            yAxes: [
+              {
+                stacked: true,
+                ticks: {
+                  beginAtZero: true,
+                },
+              },
+            ],
+            xAxes: [
+              {
+                stacked: true,
+              },
+            ],
+          },
+          plugins: {
+            labels: {
+              render: "image",
+              images: ''
+            }
+          },
+          tooltips: {            
+            yAlign: 'center',
+            position: 'middle',
+            callbacks: {
+              label: function(tooltipItem, data) {
+                var dataset = data.datasets[tooltipItem.datasetIndex];
+                return data.labels[tooltipItem.index] + ' '  + ': ' + dataset.data[tooltipItem.index];
               },
               title: function(tooltipItem, data) {
                 return data.datasets[tooltipItem[0].datasetIndex].label
