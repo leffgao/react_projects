@@ -206,6 +206,13 @@ export default class App extends React.Component {
         0,   0,   0, 65, 94, 0,  1,  0,
         0,   0
     ]
+    
+    var oppCharUsage = [
+      77,   0, 121,  0,   0, 1,  5,  9,
+       7, 100,   5,  2,  23, 3,  8, 29,
+      10,   4,   0, 48, 161, 2, 13,  5,
+       0,   9
+    ]
 
     var neutralWins = [
       [
@@ -764,6 +771,118 @@ export default class App extends React.Component {
       ]
     ]
 
+    var oppactioncount = [
+      [
+         638, 273, 152,
+        2374,  82, 359,
+         278
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        2528, 520, 260,
+        4846, 261, 764,
+         354
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        12,  3, 0, 5,
+         0, 16, 0
+      ],
+      [
+        3,  7,  8, 9,
+        4, 10, 13
+      ],
+      [
+        258, 68, 18, 117,
+         11, 78, 37
+      ],
+      [
+        103, 43, 22, 52,
+         12, 21,  5
+      ],
+      [
+        1479, 330, 162,
+        2557,  79, 538,
+         234
+      ],
+      [
+        142, 5, 12, 59,
+          4, 9, 14
+      ],
+      [
+        6,  0,  2, 40,
+        1, 10, 21
+      ],
+      [
+        120, 32, 37, 325,
+         24, 64, 72
+      ],
+      [
+        54, 12,  8, 70,
+         3, 10, 11
+      ],
+      [
+        425, 48, 33, 146,
+         17, 53, 87
+      ],
+      [
+        324,  71, 37, 112,
+         22, 156, 98
+      ],
+      [
+        231, 69, 38, 39,
+         26, 52,  7
+      ],
+      [
+        23, 46, 13, 42,
+        10, 25, 31
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        629, 218,  84,
+        409,  72, 381,
+        271
+      ],
+      [
+        2088, 544, 311,
+        2612, 534, 769,
+         462
+      ],
+      [
+        4, 3, 4, 5,
+        1, 3, 5
+      ],
+      [
+        440, 151, 40, 356,
+         45, 107, 32
+      ],
+      [
+        70, 32,  5, 103,
+        13, 24, 13
+      ],
+      [
+        0, 0, 0, 0,
+        0, 0, 0
+      ],
+      [
+        21, 39,  12, 42,
+         5, 30, 101
+      ]
+    ]
+
     // console.log(neutralWins[2])
     
     // var b = neutralWins[2].splice(1,21);
@@ -791,6 +910,7 @@ export default class App extends React.Component {
     var myNeutral = []
     var myCounter = []
     var items = []
+    var oppitems = []
   
     function movesBarChartData(charUsage, neutralArr, counterArr, title){
       // creates sorted 2d array for character id and character usage
@@ -815,10 +935,10 @@ export default class App extends React.Component {
       
     }
 
-    function actionsBarChartData(charUsage, actionArr){
+    function actionsBarChartData(charUsage, actionArr, oppCharUsage, oppActionArr){
       // creates sorted 2d array for character id and character usage
       var dict = {}
-
+ 
       for (let i = 0; i < charUsage.length; i++) {        
         dict[i] = charUsage[i];
       }
@@ -828,6 +948,20 @@ export default class App extends React.Component {
       });
   
       items.sort(function(first, second) {
+        return second[1] - first[1];
+      });
+
+      var oppdict = {}
+ 
+      for (let i = 0; i < oppCharUsage.length; i++) {        
+        oppdict[i] = oppCharUsage[i];
+      }
+  
+      oppitems = Object.keys(dict).map(function(key) {
+        return [key, oppdict[key]];
+      });
+  
+      oppitems.sort(function(first, second) {
         return second[1] - first[1];
       });
 
@@ -842,6 +976,19 @@ export default class App extends React.Component {
               backgroundColor: charbackgroundColorDict[items[i][0]],
               borderColor: charborderColorDict[items[i][0]],
               borderWidth: 1,
+              stack: 'player'
+            }
+          )
+        }
+        if(oppitems[i][1] !== 0){
+          orderedActionsArr.push(
+            {
+              label: (charDict[items[i][0]]).replace(".png", " (Opponent)"),
+              data: oppActionArr[items[i][0]],
+              backgroundColor: charbackgroundColorDict[items[i][0]],
+              borderColor: charborderColorDict[items[i][0]],
+              borderWidth: 1,
+              stack: 'opponent'
             }
           )
         }
@@ -890,7 +1037,7 @@ export default class App extends React.Component {
           Counterhit
       </label>
       <ActionsBarChart
-        dataset = {actionsBarChartData(charUsage, actioncount)}
+        dataset = {actionsBarChartData(charUsage, actioncount, oppCharUsage, oppactioncount)}
       />
       </div>
     );
@@ -983,6 +1130,12 @@ class ActionsBarChart extends React.Component {
         }}
         
          options = {{
+          legend: {
+            position: 'left',
+            labels: {
+              boxWidth: 13
+            }
+          },
           layout:{
             padding: 100
           },
@@ -1013,7 +1166,7 @@ class ActionsBarChart extends React.Component {
             callbacks: {
               label: function(tooltipItem, data) {
                 var dataset = data.datasets[tooltipItem.datasetIndex];
-                return data.labels[tooltipItem.index] + ' '  + ': ' + dataset.data[tooltipItem.index];
+                return data.labels[tooltipItem.index] + '  : ' + dataset.data[tooltipItem.index];
               },
               title: function(tooltipItem, data) {
                 return data.datasets[tooltipItem[0].datasetIndex].label
